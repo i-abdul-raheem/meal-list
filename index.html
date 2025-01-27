@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meal Chatbot</title>
+    <title>Meal Plan</title>
+    <meta name="description" content="A helpful Meal Chatbot that provides meal plans, recipes, and shopping lists.">
+    <meta name="theme-color" content="#0056b3">
+
+    <!-- Link to manifest.json -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Favicon and App Icons -->
+    <link rel="icon" href="/logo.png" sizes="192x192" type="image/png">
+    <link rel="apple-touch-icon" href="/logo.png">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -215,6 +224,15 @@
         }
 
         window.onload = loadMealPlan;
+    </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/service-worker.js").then((registration) => {
+                console.log("Service Worker registered with scope:", registration.scope);
+            }).catch((error) => {
+                console.error("Service Worker registration failed:", error);
+            });
+        }
     </script>
 </body>
 </html>
