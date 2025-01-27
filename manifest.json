@@ -1,0 +1,22 @@
+{
+    "name": "Meal Chatbot",
+    "short_name": "MealBot",
+    "description": "A helpful Meal Chatbot that provides meal plans, recipes, and shopping lists.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#222222",
+    "theme_color": "#4CAFC8",
+    "orientation": "portrait",
+    "icons": [
+      {
+        "src": "/logo.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/logo.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  }
