@@ -1,238 +1,341 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meal Plan</title>
-    <meta name="description" content="A helpful Meal Chatbot that provides meal plans, recipes, and shopping lists.">
-    <meta name="theme-color" content="#0056b3">
+    <meta
+      name="description"
+      content="A helpful Meal Chatbot that provides meal plans, recipes, and shopping lists."
+    />
+    <meta name="theme-color" content="#0056b3" />
 
     <!-- Link to manifest.json -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json" />
 
     <!-- Favicon and App Icons -->
-    <link rel="icon" href="/logo.png" sizes="192x192" type="image/png">
-    <link rel="apple-touch-icon" href="/logo.png">
+    <link rel="icon" href="/logo.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f8f9fa;
+        color: #333;
+      }
+      h1,
+      h2 {
+        color: #0056b3;
+      }
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+      li.available {
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      li.meal {
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .button:hover {
+        background-color: #0056b3;
+      }
+      a.button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      a.button:hover {
+        background-color: #0056b3;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      pre {
+        background: #e9ecef;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        h1, h2 {
-            color: #0056b3;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li.available {
-            margin: 5px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        li.meal {
-            margin: 5px 0;
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .button:hover {
-            background-color: #0056b3;
+          margin: 10px;
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          padding: 15px;
+        }
+        li.available,
+        li.meal {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .button {
+          width: 100%;
+          text-align: center;
         }
         pre {
-            background: #e9ecef;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
+          font-size: 14px;
         }
+      }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            body {
-                margin: 10px;
-            }
-            .container {
-                padding: 15px;
-            }
-            li.available, li.meal {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            .button {
-                width: 100%;
-                text-align: center;
-            }
-            pre {
-                font-size: 14px;
-            }
+      @media (max-width: 480px) {
+        h1,
+        h2 {
+          font-size: 1.5em;
         }
-
-        @media (max-width: 480px) {
-            h1, h2 {
-                font-size: 1.5em;
-            }
-            .button {
-                font-size: 14px;
-                padding: 8px;
-            }
-            pre {
-                font-size: 12px;
-            }
+        .button {
+          font-size: 14px;
+          padding: 8px;
         }
+        pre {
+          font-size: 12px;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Meal Plan for <span id="current-day"></span></h1>
-        <ul id="meal-plan"></ul>
+      <h1>Meal Plan for <span id="current-day"></span></h1>
+      <ul id="meal-plan"></ul>
 
-        <h2>Select a Dish for Recipe</h2>
-        <ul id="available-dishes"></ul>
+      <h2>Select a Dish for Recipe</h2>
+      <ul id="available-dishes"></ul>
 
-        <button class="button" onclick="getShoppingList()">Show Shopping List</button>
+      <button class="button" onclick="getShoppingList()">
+        Show Shopping List
+      </button>
+      <a href="workout.html" class="button">Workout Plan</a>
 
-        <div id="recipe-section" style="margin-top: 20px; display: none;">
-            <h2>Recipe:</h2>
-            <pre id="recipe"></pre>
-        </div>
+      <div id="recipe-section" style="margin-top: 20px; display: none">
+        <h2>Recipe:</h2>
+        <pre id="recipe"></pre>
+      </div>
 
-        <div id="shopping-list-section" style="margin-top: 20px; display: none;">
-            <h2>Shopping List:</h2>
-            <pre id="shopping-list"></pre>
-        </div>
+      <div id="shopping-list-section" style="margin-top: 20px; display: none">
+        <h2>Shopping List:</h2>
+        <pre id="shopping-list"></pre>
+      </div>
     </div>
 
     <script>
-        const mealChatbot = {
-            weeklyMealPlan: {
-                "Monday": {
-                    "Breakfast": "2 boiled eggs, 1 slice of whole-grain bread, 1 banana, 1 glass of milk (200ml)",
-                    "Lunch": "Steamed chicken (150g), steamed rice (1 cup cooked), steamed broccoli and carrots (1 cup each)",
-                    "Snack": "Greek yogurt (100g), 1 apple",
-                    "Dinner": "Ground beef curry (150g), steamed rice (1 cup cooked), steamed spinach (1 cup)"
-                },
-                "Tuesday": {
-                    "Breakfast": "Oats (40g) cooked with milk (200ml), 1 drizzle of honey",
-                    "Lunch": "Steamed chicken strips (150g), steamed rice (1 cup cooked), steamed carrots and broccoli (1 cup each)",
-                    "Snack": "1 boiled egg, 1 orange",
-                    "Dinner": "Lentil soup (1 bowl), 1 slice of whole-grain bread"
-                },
-                "Wednesday": {
-                    "Breakfast": "2 scrambled eggs, 1 slice of whole-grain bread, 1 banana",
-                    "Lunch": "Steamed ground beef curry (150g), steamed rice (1 cup cooked), steamed spinach (1 cup)",
-                    "Snack": "Greek yogurt (100g), 1 apple",
-                    "Dinner": "Steamed chicken (150g), steamed rice (1 cup cooked), steamed broccoli and carrots (1 cup each)"
-                },
-                "Thursday": {
-                    "Breakfast": "Oats (40g) cooked with milk (200ml), 1 orange",
-                    "Lunch": "Steamed chicken (150g), steamed rice (1 cup cooked), steamed carrots and cauliflower (1 cup each)",
-                    "Snack": "1 boiled egg, 1 banana",
-                    "Dinner": "Ground beef curry (150g), steamed rice (1 cup cooked), steamed spinach (1 cup)"
-                },
-                "Friday": {
-                    "Breakfast": "2 boiled eggs, 1 slice of whole-grain bread, 1 apple",
-                    "Lunch": "Kidney bean curry (1 cup cooked), steamed rice (1 cup cooked), steamed spinach (1 cup)",
-                    "Snack": "Greek yogurt (100g), 1 banana",
-                    "Dinner": "Steamed chicken (150g), steamed rice (1 cup cooked), steamed cauliflower (1 cup)"
-                },
-                "Saturday": {
-                    "Breakfast": "Oats (40g) cooked with milk (200ml), 1 drizzle of honey",
-                    "Lunch": "Steamed chicken (150g), steamed sweet potato mash (1 cup), steamed broccoli (1 cup)",
-                    "Snack": "1 boiled egg, 1 orange",
-                    "Dinner": "Ground beef curry (150g), steamed rice (1 cup cooked), steamed carrots and spinach (1 cup each)"
-                },
-                "Sunday": {
-                    "Breakfast": "Homemade pancakes (whole-grain flour, 1 egg, and milk), 1 drizzle of honey",
-                    "Lunch": "Chicken or beef burger (using ground beef as patties), 1 slice of whole-grain bread",
-                    "Snack": "Greek yogurt (100g), 1 apple",
-                    "Dinner": "Lentil curry (1 bowl), steamed rice (1 cup cooked), steamed spinach (1 cup)"
-                }
-            },
-            recipes: {
-                "Ground beef curry": "1. Heat 1 tsp olive oil in a pan.\n2. Sauté 1 chopped onion until golden.\n3. Add 1 tsp ginger garlic paste and cook for 1 minute.\n4. Add 150g ground beef and cook until browned.\n5. Add 1 diced tomato, spices (turmeric, cumin, coriander), and 1/2 cup water. Simmer for 10 minutes.",
-                "Steamed chicken": "1. Season 150g chicken breast with salt and pepper.\n2. Place in a steamer and cook for 20-25 minutes or until fully cooked.",
-                "Steamed rice": "1. Rinse 1/3 cup rice under cold water.\n2. Add to a heatproof bowl with 2/3 cup water.\n3. Cover and steam for 25-30 minutes.",
-                "Kidney bean curry": "1. Heat 1 tsp olive oil in a pan.\n2. Sauté 1 chopped onion until golden.\n3. Add 1 tsp ginger garlic paste and cook for 1 minute.\n4. Add 1 cup cooked kidney beans, 1 diced tomato, spices (turmeric, cumin, coriander), and 1/2 cup water. Simmer for 10 minutes.",
-                "Lentil soup": "1. Rinse 1/2 cup lentils.\n2. Sauté 1 chopped onion, garlic, and 1 diced tomato in 1 tsp olive oil.\n3. Add lentils and 2 cups water. Simmer for 20-25 minutes. Add salt to taste.",
-                "Homemade pancakes": "1. Mix 1/4 cup whole-grain flour, 1 egg, and 1/4 cup milk into a smooth batter.\n2. Heat a non-stick pan, grease lightly, and cook small pancakes for 1-2 minutes per side."
-            },
-            ingredients: [
-                "Boiled eggs", "Whole-grain bread", "Bananas", "Milk",
-                "Chicken breast", "Rice", "Broccoli", "Carrots",
-                "Greek yogurt", "Apples", "Oranges", "Honey",
-                "Ground beef", "Spinach", "Cauliflower", "Sweet potatoes",
-                "Kidney beans", "Lentils", "Whole-grain flour", "Eggs"
-            ]
-        };
-        
-        function getCurrentDay() {
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            return days[new Date().getDay()];
+      const mealChatbot = {
+        weeklyMealPlan: {
+          Monday: {
+            Breakfast:
+              "3 boiled eggs, 1 slice of whole-grain bread, 1 banana, 1 glass of milk (300ml), 1 tbsp peanut butter",
+            Lunch:
+              "Grilled chicken (200g), steamed rice (1.5 cups cooked), steamed broccoli and carrots (1 cup each), 1 tbsp olive oil",
+            Snack: "Greek yogurt (150g), 1 apple, 10 almonds",
+            "Post-Workout":
+              "Whey protein (30g) with banana and oats (40g) blended with milk (250ml)",
+            Dinner:
+              "Ground beef curry (200g), steamed rice (1.5 cups cooked), steamed spinach (1 cup), 1 tbsp olive oil",
+          },
+          Tuesday: {
+            Breakfast:
+              "Oats (50g) cooked with milk (300ml), 1 drizzle of honey, 1 tbsp peanut butter, 10 walnuts",
+            Lunch:
+              "Grilled chicken strips (200g), steamed rice (1.5 cups cooked), steamed carrots and broccoli (1 cup each), 1 tbsp olive oil",
+            Snack: "2 boiled eggs, 1 orange",
+            "Post-Workout":
+              "Whey protein (30g) with banana and oats (40g) blended with milk (250ml)",
+            Dinner:
+              "Lentil soup (1.5 bowls), 1 slice of whole-grain bread, 1 tbsp olive oil",
+          },
+          Wednesday: {
+            Breakfast:
+              "3 scrambled eggs, 1 slice of whole-grain bread, 1 banana, 1 glass of milk (300ml), 1 tbsp peanut butter",
+            Lunch:
+              "Steamed ground beef curry (200g), steamed rice (1.5 cups cooked), steamed spinach (1 cup), 1 tbsp olive oil",
+            Snack: "Greek yogurt (150g), 1 apple, 10 almonds",
+            "Post-Workout":
+              "Whey protein (30g) with banana and oats (40g) blended with milk (250ml)",
+            Dinner:
+              "Grilled chicken (200g), steamed rice (1.5 cups cooked), steamed broccoli and carrots (1 cup each), 1 tbsp olive oil",
+          },
+          Thursday: {
+            Breakfast:
+              "Oats (50g) cooked with milk (300ml), 1 orange, 1 tbsp peanut butter, 10 walnuts",
+            Lunch:
+              "Grilled chicken (200g), steamed rice (1.5 cups cooked), steamed carrots and cauliflower (1 cup each), 1 tbsp olive oil",
+            Snack: "2 boiled eggs, 1 banana",
+            "Post-Workout":
+              "Whey protein (30g) with banana and oats (40g) blended with milk (250ml)",
+            Dinner:
+              "Ground beef curry (200g), steamed rice (1.5 cups cooked), steamed spinach (1 cup), 1 tbsp olive oil",
+          },
+          Friday: {
+            Breakfast:
+              "3 boiled eggs, 1 slice of whole-grain bread, 1 apple, 1 glass of milk (300ml), 1 tbsp peanut butter",
+            Lunch:
+              "Kidney bean curry (1.5 cups cooked), steamed rice (1.5 cups cooked), steamed spinach (1 cup), 1 tbsp olive oil",
+            Snack: "Greek yogurt (150g), 1 banana, 10 almonds",
+            "Post-Workout":
+              "Whey protein (30g) with banana and oats (40g) blended with milk (250ml)",
+            Dinner:
+              "Grilled chicken (200g), steamed rice (1.5 cups cooked), steamed cauliflower (1 cup), 1 tbsp olive oil",
+          },
+          Saturday: {
+            Breakfast:
+              "Oats (50g) cooked with milk (300ml), 1 drizzle of honey, 1 tbsp peanut butter, 10 walnuts",
+            Lunch:
+              "Grilled chicken (200g), steamed sweet potato mash (1.5 cups), steamed broccoli (1 cup), 1 tbsp olive oil",
+            Snack: "2 boiled eggs, 1 orange",
+            "Post-Workout":
+              "Whey protein (30g) with banana and oats (40g) blended with milk (250ml)",
+            Dinner:
+              "Ground beef curry (200g), steamed rice (1.5 cups cooked), steamed carrots and spinach (1 cup each), 1 tbsp olive oil",
+          },
+          Sunday: {
+            Breakfast:
+              "Homemade pancakes (whole-grain flour, 1 egg, and milk), 1 drizzle of honey, 1 tbsp peanut butter, 10 almonds",
+            Lunch:
+              "Chicken or beef burger (using ground beef as patties), 1 slice of whole-grain bread, 1 tbsp olive oil",
+            Snack: "Greek yogurt (150g), 1 apple, 10 walnuts",
+            "Post-Workout":
+              "Whey protein (30g) with banana and oats (40g) blended with milk (250ml)",
+            Dinner:
+              "Lentil curry (1.5 bowls), steamed rice (1.5 cups cooked), steamed spinach (1 cup), 1 tbsp olive oil",
+          },
+        },
+        recipes: {
+          "Ground beef curry":
+            "1. Heat 1 tsp olive oil in a pan.\n2. Sauté 1 chopped onion until golden.\n3. Add 1 tsp ginger garlic paste and cook for 1 minute.\n4. Add 150g ground beef and cook until browned.\n5. Add 1 diced tomato, spices (turmeric, cumin, coriander), and 1/2 cup water. Simmer for 10 minutes.",
+          "Steamed chicken":
+            "1. Season 150g chicken breast with salt and pepper.\n2. Place in a steamer and cook for 20-25 minutes or until fully cooked.",
+          "Steamed rice":
+            "1. Rinse 1/3 cup rice under cold water.\n2. Add to a heatproof bowl with 2/3 cup water.\n3. Cover and steam for 25-30 minutes.",
+          "Kidney bean curry":
+            "1. Heat 1 tsp olive oil in a pan.\n2. Sauté 1 chopped onion until golden.\n3. Add 1 tsp ginger garlic paste and cook for 1 minute.\n4. Add 1 cup cooked kidney beans, 1 diced tomato, spices (turmeric, cumin, coriander), and 1/2 cup water. Simmer for 10 minutes.",
+          "Lentil soup":
+            "1. Rinse 1/2 cup lentils.\n2. Sauté 1 chopped onion, garlic, and 1 diced tomato in 1 tsp olive oil.\n3. Add lentils and 2 cups water. Simmer for 20-25 minutes. Add salt to taste.",
+          "Homemade pancakes":
+            "1. Mix 1/4 cup whole-grain flour, 1 egg, and 1/4 cup milk into a smooth batter.\n2. Heat a non-stick pan, grease lightly, and cook small pancakes for 1-2 minutes per side.",
+        },
+        ingredients: [
+          "Boiled eggs",
+          "Whole-grain bread",
+          "Bananas",
+          "Milk",
+          "Chicken breast",
+          "Rice",
+          "Broccoli",
+          "Carrots",
+          "Greek yogurt",
+          "Apples",
+          "Oranges",
+          "Honey",
+          "Ground beef",
+          "Spinach",
+          "Cauliflower",
+          "Sweet potatoes",
+          "Kidney beans",
+          "Lentils",
+          "Whole-grain flour",
+          "Eggs",
+        ],
+      };
+
+      function getCurrentDay() {
+        const days = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        return days[new Date().getDay()];
+      }
+
+      function loadMealPlan() {
+        const currentDay = getCurrentDay();
+        document.getElementById("current-day").textContent = currentDay;
+
+        const mealPlan = mealChatbot.weeklyMealPlan[currentDay];
+        const mealPlanList = document.getElementById("meal-plan");
+        mealPlanList.innerHTML = Object.entries(mealPlan)
+          .map(
+            ([meal, details]) =>
+              `<li class="meal"><strong>${meal}:</strong> ${details}</li>`
+          )
+          .join("");
+
+        const availableDishesList = document.getElementById("available-dishes");
+        const availableDishes = Object.keys(mealChatbot.recipes);
+        availableDishesList.innerHTML = availableDishes
+          .map(
+            (dish, index) =>
+              `<li class="available">${dish} <button class='button' onclick='showRecipe(${index})'>Get Recipe</button></li>`
+          )
+          .join("");
+      }
+
+      function showRecipe(index) {
+        const availableDishes = Object.keys(mealChatbot.recipes);
+        if (index >= 0 && index < availableDishes.length) {
+          const recipe = mealChatbot.recipes[availableDishes[index]];
+          document.getElementById("recipe").textContent = recipe;
+          document.getElementById("recipe-section").style.display = "block";
+        } else {
+          alert("Invalid dish selection.");
         }
+      }
 
-        function loadMealPlan() {
-            const currentDay = getCurrentDay();
-            document.getElementById("current-day").textContent = currentDay;
+      function getShoppingList() {
+        const shoppingList =
+          "<ol><li>" + mealChatbot.ingredients.join("</li><li>") + "</li></ol>";
+        document.getElementById("shopping-list").innerHTML = shoppingList;
+        document.getElementById("shopping-list-section").style.display =
+          "block";
+      }
 
-            const mealPlan = mealChatbot.weeklyMealPlan[currentDay];
-            const mealPlanList = document.getElementById("meal-plan");
-            mealPlanList.innerHTML = Object.entries(mealPlan).map(([meal, details]) => `<li class="meal"><strong>${meal}:</strong> ${details}</li>`).join("");
-
-            const availableDishesList = document.getElementById("available-dishes");
-            const availableDishes = Object.keys(mealChatbot.recipes);
-            availableDishesList.innerHTML = availableDishes.map((dish, index) => `<li class="available">${dish} <button class='button' onclick='showRecipe(${index})'>Get Recipe</button></li>`).join("");
-        }
-
-        function showRecipe(index) {
-            const availableDishes = Object.keys(mealChatbot.recipes);
-            if (index >= 0 && index < availableDishes.length) {
-                const recipe = mealChatbot.recipes[availableDishes[index]];
-                document.getElementById("recipe").textContent = recipe;
-                document.getElementById("recipe-section").style.display = "block";
-            } else {
-                alert("Invalid dish selection.");
-            }
-        }
-
-        function getShoppingList() {
-            const shoppingList = "<ol><li>" + mealChatbot.ingredients.join("</li><li>") + "</li></ol>";
-            document.getElementById("shopping-list").innerHTML = shoppingList;
-            document.getElementById("shopping-list-section").style.display = "block";
-        }
-
-        window.onload = loadMealPlan;
+      window.onload = loadMealPlan;
     </script>
     <script>
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("/service-worker.js").then((registration) => {
-                console.log("Service Worker registered with scope:", registration.scope);
-            }).catch((error) => {
-                console.error("Service Worker registration failed:", error);
-            });
-        }
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then((registration) => {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch((error) => {
+            console.error("Service Worker registration failed:", error);
+          });
+      }
     </script>
-</body>
+  </body>
 </html>

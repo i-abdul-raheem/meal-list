@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal & Workout Plan</title>
+    <meta name="description" content="A helpful Meal & Workout Chatbot that provides meal plans, recipes, shopping lists, and workout routines.">
+    <meta name="theme-color" content="#0056b3">
+
+    <!-- Link to manifest.json -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Favicon and App Icons -->
+    <link rel="icon" href="/logo.png" sizes="192x192" type="image/png">
+    <link rel="apple-touch-icon" href="/logo.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1, h2 {
+            color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        pre {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Workout Routine for <span id="current-day"></span></h1>
+        <ul id="workout-plan"></ul>
+    </div>
+
+    <script>
+        const chatbotData = {
+            weeklyWorkoutPlan: {
+                "Monday": {
+                    "Chest": ["Pushups", "One-arm bench dips", "Explosive negative pushups", "Elevated pushups", "Elevated diamond squeeze pushups", "Typewriter pushups", "One-arm fingertip pushups", "20s 90-degree hold + toe taps"],
+                    "Triceps": ["Elevated Pikes", "Bench Dips", "Cross tricep extensions", "Skull crushers", "Tricep extensions", "Diamond pushups", "Pseudo pushups"]
+                },
+                "Tuesday": {
+                    "Back": ["45 seconds Good Mornings", "45 seconds Body Rows", "45 seconds Reverse Tuck Leg Raises", "45 seconds Reverse Tuck Leg Hold", "45 seconds Tucked Dragon Press Hold", "45 seconds Reverse Plank Hold"],
+                    "Biceps": ["Bench Dips", "Skull Crushers", "Diamond Pushups", "Bicep Curl", "Bicep Pump", "Rear Delt Fly", "Shoulder Pump", "Pike Pushups", "Pike Press"]
+                },
+                "Wednesday": {
+                    "Legs": ["45 seconds Frog Squats", "22 seconds each Single-Leg Romanian Deadlift", "45 seconds Sumo Walks", "45 seconds Switching Lunges", "45 seconds Squat Side Leg Raises", "45 seconds Alternating Assisted Pistol Squats", "22 seconds each Back-and-Forth Lunge", "22 seconds each Elevated Side Squats", "45 seconds Alternating Curtsy Lunges", "45 seconds Butt Kicks", "45 seconds Crab Walks", "45 seconds Wall Sit"]
+                },
+                "Thursday": {
+                    "Shoulders": ["15 seconds Tuck Planche Hold", "45 seconds Reverse Plank Hold", "45 seconds Parallel Hold", "45 seconds 90-Degree Hold Toe Taps", "22 seconds each High-Side Plank Raises", "45 seconds Wide Body Rows", "45 seconds Elevated Pike Push-Ups", "45 seconds Body Weight Rear Delt", "45 seconds Pike Walkouts", "45 seconds Elevated High Plank to Pike"],
+                    "Abs": ["45 seconds High Knee Taps", "45 seconds Leg Raises", "45 seconds Hip Raises", "45 seconds Flutter Kicks", "45 seconds Plank Knees to Elbow", "45 seconds Chair Sit-Ups", "45 seconds Seated In and Outs", "45 seconds Jumping Jacks"]
+                },
+                "Friday": {
+                    "Full Body": ["45 seconds Burpees", "45 seconds Pike Push-Ups", "45 seconds 90-Degree Toe Taps", "45 seconds Tricep Extensions", "22 seconds each side Single-Leg Push-Ups", "45 seconds Bench Dips", "45 seconds Body Rows", "45 seconds Tucked Reverse Leg", "22 seconds each side Side Lunges", "22 seconds each side Explosive Lunges", "45 seconds Squats", "22 seconds each side High Plank to Low Plank", "45 seconds In and Outs", "45 seconds Plank Hold", "45 seconds Russian Twists"]
+                },
+                "Saturday": "Rest",
+                "Sunday": "Rest"
+            }
+        };
+
+        function loadWorkoutPlan() {
+            const currentDay = new Date().toLocaleString('en-us', { weekday: 'long' });
+            document.getElementById("current-day").textContent = currentDay;
+            
+            const workoutPlan = chatbotData.weeklyWorkoutPlan[currentDay];
+            const workoutList = document.getElementById("workout-plan");
+            
+            if (typeof workoutPlan === "string") {
+                workoutList.innerHTML = `<li>${workoutPlan}</li>`;
+            } else {
+                workoutList.innerHTML = Object.entries(workoutPlan).map(([category, exercises]) => `<li><strong>${category}:</strong> <br /> <ol>${exercises.map(ex => `<li>${ex}</li>`).join("")}</ol></li>`).join("");
+            }
+        }
+
+        window.onload = loadWorkoutPlan;
+    </script>
+</body>
+</html>
